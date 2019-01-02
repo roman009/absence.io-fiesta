@@ -13,6 +13,7 @@ timezone = '+0100'
 
 def get_time():
     (dt, micro) = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f').split('.')
+
     return '%s.%03dZ' % (dt, int(micro) / 1000)
 
 
@@ -65,9 +66,10 @@ def do_stop():
 
     url = 'https://app.absence.io/api/v2/timespans/{}'.format(entry['_id'])
     data = json.dumps(payload)
-
     hawk_auth = HawkAuth(id=user_id, key=key, server_url=url)
+
     request_response = requests.put(url, auth=hawk_auth, data=data, headers={'Content-Type': 'application/json'})
+
     return request_response
 
 
