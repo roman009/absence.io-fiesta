@@ -1,14 +1,14 @@
 import argparse
 import json
+import requests
 from datetime import datetime
 from requests_hawk import HawkAuth
 
-import requests
 
-user_id = '<user_id>'
-key = '<api_key>'
-timezoneName = 'CET'
-timezone = '+0100'
+USER_ID = '<user_id>'
+API_KEY = '<api_key>'
+TIMEZONE_NAME = 'CET'
+TIMEZONE = '+0100'
 
 
 def get_time():
@@ -19,17 +19,17 @@ def get_time():
 
 def do_start():
     payload = {
-        'userId': user_id,
+        'userId': USER_ID,
         'start': get_time(),
         'end': None,
-        'timezoneName': timezoneName,
-        'timezone': timezone,
+        'timezoneName': TIMEZONE_NAME,
+        'timezone': TIMEZONE,
         'type': 'work'
     }
 
     url = 'https://app.absence.io/api/v2/timespans/create'
     data = json.dumps(payload)
-    hawk_auth = HawkAuth(id=user_id, key=key, server_url=url)
+    hawk_auth = HawkAuth(id=USER_ID, key=API_KEY, server_url=url)
 
     request_response = requests.post(url, auth=hawk_auth, data=data, headers={'Content-Type': 'application/json'})
 
@@ -39,7 +39,7 @@ def do_start():
 def do_stop():
     payload = {
         'filter': {
-            'userId': user_id,
+            'userId': USER_ID,
             'end': {'$eq': None}
         },
         'limit': 10,
@@ -48,7 +48,7 @@ def do_stop():
 
     url = 'https://app.absence.io/api/v2/timespans'
     data = json.dumps(payload)
-    hawk_auth = HawkAuth(id=user_id, key=key, server_url=url)
+    hawk_auth = HawkAuth(id=USER_ID, key=API_KEY, server_url=url)
 
     request_response = requests.post(url, auth=hawk_auth, data=data, headers={'Content-Type': 'application/json'})
     if request_response.ok:
@@ -60,13 +60,13 @@ def do_stop():
     payload = {
         'start': entry['start'],
         'end': get_time(),
-        'timezoneName': timezoneName,
-        'timezone': timezone
+        'timezoneName': TIMEZONE_NAME,
+        'timezone': TIMEZONE
     }
 
     url = 'https://app.absence.io/api/v2/timespans/{}'.format(entry['_id'])
     data = json.dumps(payload)
-    hawk_auth = HawkAuth(id=user_id, key=key, server_url=url)
+    hawk_auth = HawkAuth(id=USER_ID, key=API_KEY, server_url=url)
 
     request_response = requests.put(url, auth=hawk_auth, data=data, headers={'Content-Type': 'application/json'})
 

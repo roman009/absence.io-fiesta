@@ -6,10 +6,10 @@
 - change the following in `track.py` with your absence.io API credentials
  
 ````
-user_id = "<user_id>"
-key = "<api_key>"
-timezoneName = "CET"
-timezone = "+0100"
+USER_ID = '<user_id>'
+API_KEY = '<api_key>'
+TIMEZONE_NAME = 'CET'
+TIMEZONE = '+0100'
 ````
 
 ## Run
